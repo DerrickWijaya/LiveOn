@@ -3,9 +3,70 @@
 @section('title', 'Register - LiveOn')
 
 @section('content')
-<div style="display: flex; min-height: 100vh; background: #ffffff; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;">
+<style>
+    .auth-container {
+        display: flex;
+        min-height: 100vh;
+    }
+
+    .auth-left {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+    }
+
+    .auth-right {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+    }
+
+    @media (max-width: 768px) {
+        .auth-container {
+            flex-direction: column;
+        }
+
+        .auth-left {
+            min-height: 35vh;
+            padding: 30px 20px;
+        }
+
+        .auth-left h2 {
+            font-size: 1.8rem !important;
+        }
+
+        .auth-right {
+            padding: 30px 20px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .auth-left {
+            min-height: 25vh;
+            padding: 20px 15px;
+        }
+
+        .auth-left h2 {
+            font-size: 1.5rem !important;
+        }
+
+        .auth-right {
+            padding: 20px 15px;
+        }
+
+        .auth-form-container {
+            max-width: 100% !important;
+        }
+    }
+</style>
+
+<div class="auth-container" style="display: flex; min-height: 100vh; background: #ffffff; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;">
     <!-- Left Side - Purple Gradient -->
-    <div style="flex: 1; background: linear-gradient(135deg, #7C5CEE 0%, #6B4ACC 100%); display: flex; align-items: center; justify-content: center; padding: 40px; color: white; min-height: 100vh;">
+    <div class="auth-left" style="flex: 1; background: linear-gradient(135deg, #7C5CEE 0%, #6B4ACC 100%); display: flex; align-items: center; justify-content: center; padding: 40px; color: white; min-height: 100vh;">
         <div style="text-align: center;">
             <h2 style="font-size: 2.4rem; font-weight: 700; margin-bottom: 16px;">Join the community.</h2>
             <p style="font-size: 1rem; opacity: 0.9; line-height: 1.6;">Never go to a concert alone again.</p>
@@ -13,8 +74,8 @@
     </div>
 
     <!-- Right Side - Form -->
-    <div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px; background: #ffffff;">
-        <div style="width: 100%; max-width: 420px;">
+    <div class="auth-right" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px; background: #ffffff;">
+        <div class="auth-form-container" style="width: 100%; max-width: 420px;">
             <div style="text-align: center; margin-bottom: 32px;">
                 <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 18px;">
                     <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #7C5CEE, #FF6B9D); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
