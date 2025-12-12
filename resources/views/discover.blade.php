@@ -32,10 +32,12 @@
 
         <!-- Search Bar and Actions -->
         <div style="display: flex; align-items: center; gap: 12px;">
-            <div style="position: relative;">
-                <input type="text" placeholder="Search concerts..." style="padding: 9px 14px; border: 1px solid #ddd; border-radius: 20px; width: 220px; font-size: 0.85rem; background: #fafbfc;">
-                <i class="fas fa-search" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #999; font-size: 0.9rem;"></i>
-            </div>
+            <form action="{{ route('discover') }}" method="GET" style="position: relative;">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search concerts..." style="padding: 9px 36px 9px 14px; border: 1px solid #ddd; border-radius: 20px; width: 220px; font-size: 0.85rem; background: #fafbfc;">
+                <button type="submit" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #999; padding: 4px 8px;">
+                    <i class="fas fa-search" style="font-size: 0.9rem;"></i>
+                </button>
+            </form>
             <button type="button" style="background: linear-gradient(135deg, #7C5CEE, #FF6B9D); color: white; border: none; padding: 9px 18px; border-radius: 20px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.9rem;" data-bs-toggle="modal" data-bs-target="#createPostModal">
                 <i class="fas fa-plus" style="font-size: 0.8rem;"></i> Create
             </button>
