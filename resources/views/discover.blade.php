@@ -9,10 +9,118 @@
         padding: 0;
         font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
     }
+
+    .discover-nav {
+        padding: 12px 20px !important;
+    }
+
+    .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .search-input {
+        width: 220px;
+    }
+
+    .discover-container {
+        display: flex;
+        gap: 20px;
+    }
+
+    .filter-sidebar {
+        flex: 0 0 200px;
+    }
+
+    .main-content {
+        flex: 1;
+    }
+
+    .upcoming-sidebar {
+        flex: 0 0 220px;
+    }
+
+    .mobile-filter-btn {
+        display: none;
+    }
+
+    .mobile-menu-btn {
+        display: none;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 1200px) {
+        .upcoming-sidebar {
+            display: none;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .filter-sidebar {
+            display: none;
+        }
+        
+        .mobile-filter-btn {
+            display: block;
+        }
+
+        .search-input {
+            width: 180px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .discover-nav {
+            padding: 10px 15px !important;
+        }
+
+        .nav-links {
+            display: none !important;
+        }
+
+        .mobile-menu-btn {
+            display: flex;
+        }
+
+        .search-input {
+            width: 150px;
+        }
+
+        .nav-actions button span {
+            display: none;
+        }
+
+        .discover-container {
+            padding: 0 10px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .search-input {
+            width: 120px;
+            font-size: 0.8rem;
+        }
+
+        .nav-actions {
+            gap: 6px;
+        }
+
+        .nav-actions button {
+            padding: 8px 12px !important;
+            font-size: 0.85rem !important;
+        }
+    }
 </style>
 
 <!-- Custom Header for Discover with Search -->
-<nav style="background-color: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 12px 30px; position: sticky; top: 0; z-index: 1020; margin: 0;">
+<nav class="discover-nav" style="background-color: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.06); padding: 12px 30px; position: sticky; top: 0; z-index: 1020; margin: 0;">
     <div style="max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
         <!-- Logo -->
         <a href="#" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
@@ -22,8 +130,13 @@
             <span style="font-weight: 700; font-size: 1.1rem; color: #000;">LiveON</span>
         </a>
 
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn" style="background: none; border: none; font-size: 1.3rem; color: #666; cursor: pointer; display: none; align-items: center; justify-content: center; width: 40px; height: 40px;" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+
         <!-- Navigation Links -->
-        <div style="display: flex; align-items: center; gap: 18px;">
+        <div class="nav-links" style="display: flex; align-items: center; gap: 18px;">
             <a href="{{ route('discover') }}" style="color: #7C5CEE; font-weight: 600; text-decoration: none; font-size: 0.9rem;">Discover</a>
             <a href="{{ route('myevents') }}" style="color: #666; font-weight: 500; text-decoration: none; font-size: 0.9rem;">My Events</a>
             <a href="{{ route('joinhistory') }}" style="color: #666; font-weight: 500; text-decoration: none; font-size: 0.9rem;">Join History</a>
@@ -31,15 +144,15 @@
         </div>
 
         <!-- Search Bar and Actions -->
-        <div style="display: flex; align-items: center; gap: 12px;">
+        <div class="nav-actions" style="display: flex; align-items: center; gap: 12px;">
             <form action="{{ route('discover') }}" method="GET" style="position: relative;">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search concerts..." style="padding: 9px 36px 9px 14px; border: 1px solid #ddd; border-radius: 20px; width: 220px; font-size: 0.85rem; background: #fafbfc;">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search..." class="search-input" style="padding: 9px 36px 9px 14px; border: 1px solid #ddd; border-radius: 20px; font-size: 0.85rem; background: #fafbfc;">
                 <button type="submit" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #999; padding: 4px 8px;">
                     <i class="fas fa-search" style="font-size: 0.9rem;"></i>
                 </button>
             </form>
             <button type="button" style="background: linear-gradient(135deg, #7C5CEE, #FF6B9D); color: white; border: none; padding: 9px 18px; border-radius: 20px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.9rem;" data-bs-toggle="modal" data-bs-target="#createPostModal">
-                <i class="fas fa-plus" style="font-size: 0.8rem;"></i> Create
+                <i class="fas fa-plus" style="font-size: 0.8rem;"></i> <span>Create</span>
             </button>
             @if (Auth::user()->profile_image)
                 <a href="{{ route('profile') }}" style="text-decoration: none;">
@@ -56,12 +169,23 @@
     </div>
 </nav>
 
+<!-- Mobile Navigation Menu -->
+<div id="mobileMenu" style="display: none; position: fixed; top: 62px; left: 0; right: 0; background: white; box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 1019; padding: 20px;">
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+        <a href="{{ route('discover') }}" style="color: #7C5CEE; font-weight: 600; text-decoration: none; padding: 10px; border-radius: 6px; background: #f5f3ff;">Discover</a>
+        <a href="{{ route('myevents') }}" style="color: #666; font-weight: 500; text-decoration: none; padding: 10px;">My Events</a>
+        <a href="{{ route('joinhistory') }}" style="color: #666; font-weight: 500; text-decoration: none; padding: 10px;">Join History</a>
+        <a href="{{ route('messages') }}" style="color: #666; font-weight: 500; text-decoration: none; padding: 10px;">Messages</a>
+        <a href="{{ route('profile') }}" style="color: #666; font-weight: 500; text-decoration: none; padding: 10px;">Profile</a>
+    </div>
+</div>
+
 <div style="background: #fafbfc; min-height: 100vh; padding: 20px 0;">
-    <div class="container-fluid" style="max-width: 1400px; margin: 0 auto;">
-        <div style="display: flex; gap: 20px;">
+    <div class="container-fluid" style="max-width: 1400px; margin: 0 auto; padding: 0 15px;">
+        <div class="discover-container" style="display: flex; gap: 20px;">
             
             <!-- Left Sidebar - Filters -->
-            <div style="flex: 0 0 200px;">
+            <div class="filter-sidebar" style="flex: 0 0 200px;">
                 <div style="background: white; padding: 18px; border-radius: 12px; position: sticky; top: 80px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
                     <h5 style="font-weight: 700; margin-bottom: 16px; color: #1a1a1a; font-size: 0.95rem;">Filters</h5>
                     
@@ -92,13 +216,16 @@
             </div>
 
             <!-- Center Content - Concert Posts -->
-            <div style="flex: 1;">
+            <div class="main-content" style="flex: 1;">
                 <!-- Header -->
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-                    <h2 style="font-size: 2rem; font-weight: 700; color: #000; margin: 0;">Concert Posts</h2>
-                    <div style="display: flex; gap: 10px; align-items: center;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px;">
+                    <h2 style="font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 700; color: #000; margin: 0;">Concert Posts</h2>
+                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                        <button type="button" class="mobile-filter-btn btn" style="background: white; color: #7C5CEE; border: 1px solid #7C5CEE; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; display: none;" onclick="toggleFilters()">
+                            <i class="fas fa-filter"></i> Filters
+                        </button>
                         <button type="button" class="btn" style="background: linear-gradient(135deg, #7C5CEE, #FF6B9D); color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#createPostModal">
-                            <i class="fas fa-plus"></i> Create Post
+                            <i class="fas fa-plus"></i> <span class="d-none d-sm-inline">Create Post</span>
                         </button>
                     </div>
                 </div>
@@ -141,14 +268,14 @@
                         </div>
 
                         <!-- Content -->
-                        <div style="padding: 20px;">
-                            <div style="display: flex; gap: 20px;">
+                        <div style="padding: 15px 20px;">
+                            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
                                 <!-- Left - Info -->
-                                <div style="flex: 1;">
+                                <div style="flex: 1; min-width: 250px;">
                                     <p style="color: #666; line-height: 1.6; margin-bottom: 15px;">{{ Str::limit($post->description, 200) }}</p>
 
-                                    <div style="display: flex; align-items: center; gap: 20px; font-size: 0.9rem; color: #999;">
-                                        <span><i class="fas fa-users"></i> {{ $post->spotsFilledCount() }}/{{ $post->spots_available }} spots filled</span>
+                                    <div style="display: flex; align-items: center; gap: 15px; font-size: 0.85rem; color: #999; flex-wrap: wrap;">
+                                        <span><i class="fas fa-users"></i> {{ $post->spotsFilledCount() }}/{{ $post->spots_available }} spots</span>
                                         <span><i class="fas fa-map-marker-alt"></i> {{ $post->city }}</span>
                                     </div>
 
@@ -160,7 +287,7 @@
                                 </div>
 
                                 <!-- Right - Action -->
-                                <div style="flex: 0 0 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;">
+                                <div style="flex: 0 0 120px; min-width: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;">
                                     @php
                                         $userRequest = $post->requests()->where('user_id', Auth::id())->first();
                                         $isFull = $post->spotsLeftCount() <= 0;
@@ -217,7 +344,7 @@
                         {{ $posts->appends(request()->query())->links() }}
                     </div>
                 @endif
-            </div>
+            </divclass="upcoming-sidebar" >
 
             <!-- Right Sidebar - Upcoming Events -->
             <div style="flex: 0 0 220px;">
@@ -360,6 +487,25 @@
 </div>
 
 <script>
+// Mobile menu toggle
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobileMenu');
+    if (menu.style.display === 'none' || menu.style.display === '') {
+        menu.style.display = 'block';
+    } else {
+        menu.style.display = 'none';
+    }
+}
+
+// Close mobile menu when clicking outside
+document.addEventListener('click', function(event) {
+    const menu = document.getElementById('mobileMenu');
+    const menuBtn = document.querySelector('.mobile-menu-btn');
+    if (menu && menuBtn && !menu.contains(event.target) && !menuBtn.contains(event.target)) {
+        menu.style.display = 'none';
+    }
+});
+
 // Character counter for description
 document.getElementById('description').addEventListener('input', function() {
     document.getElementById('charCount').textContent = this.value.length;

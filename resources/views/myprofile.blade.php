@@ -3,8 +3,52 @@
 @section('title', 'My Profile - LiveOn')
 
 @section('content')
+<style>
+    @media (max-width: 992px) {
+        .profile-grid {
+            grid-template-columns: 1fr !important;
+        }
+    }
 
-<div style="padding: 32px 30px; max-width: 1200px; margin: 0 auto; background: #fafbfc; min-height: 100vh; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;">
+    @media (max-width: 768px) {
+        .profile-header {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 15px !important;
+        }
+
+        .profile-actions {
+            width: 100%;
+            flex-direction: column !important;
+        }
+
+        .profile-actions button,
+        .profile-actions form {
+            width: 100%;
+        }
+
+        .profile-actions button {
+            justify-content: center !important;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .profile-container {
+            padding: 15px !important;
+        }
+
+        .profile-picture {
+            width: 90px !important;
+            height: 90px !important;
+        }
+
+        .profile-name {
+            font-size: 1.4rem !important;
+        }
+    }
+</style>
+
+<div class="profile-container" style="padding: 32px 30px; max-width: 1200px; margin: 0 auto; background: #fafbfc; min-height: 100vh; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;">
     @if ($errors->any())
         <div style="background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; padding: 12px; border-radius: 6px; margin-bottom: 20px;">
             @foreach ($errors->all() as $error)
@@ -20,18 +64,18 @@
     @endif
 
     <!-- Profile Header with Cover -->
-    <div style="background: linear-gradient(135deg, #7C5CEE, #FF6B9D); border-radius: 12px; padding: 32px; margin-bottom: 24px; position: relative; min-height: 200px; display: flex; align-items: flex-end;">
+    <div style="background: linear-gradient(135deg, #7C5CEE, #FF6B9D); border-radius: 12px; padding: 20px; margin-bottom: 24px; position: relative; min-height: 200px; display: flex; align-items: flex-end;">
         @if ($user->cover_image)
             <img src="{{ str_starts_with($user->cover_image, 'http') ? $user->cover_image : asset('storage/' . $user->cover_image) }}" alt="Cover" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
         @endif
         
-        <div style="position: relative; z-index: 1; display: flex; align-items: flex-end; gap: 20px; width: 100%;">
+        <div class="profile-header" style="position: relative; z-index: 1; display: flex; align-items: flex-end; gap: 20px; width: 100%;">
             <!-- Profile Picture -->
             <div style="position: relative;">
                 @if ($user->profile_image)
-                    <img src="{{ str_starts_with($user->profile_image, 'http') ? $user->profile_image : asset('storage/' . $user->profile_image) }}" alt="Profile" style="width: 120px; height: 120px; border-radius: 50%; border: 4px solid white; object-fit: cover;">
+                    <img src="{{ str_starts_with($user->profile_image, 'http') ? $user->profile_image : asset('storage/' . $user->profile_image) }}" alt="Profile" class="profile-picture" style="width: 120px; height: 120px; border-radius: 50%; border: 4px solid white; object-fit: cover;">
                 @else
-                    <div style="width: 120px; height: 120px; background: white; border-radius: 50%; border: 4px solid white; display: flex; align-items: center; justify-content: center; color: #7C5CEE; font-weight: 700; font-size: 2.5rem;">
+                    <div class="profile-picture" style="width: 120px; height: 120px; background: white; border-radius: 50%; border: 4px solid white; display: flex; align-items: center; justify-content: center; color: #7C5CEE; font-weight: 700; font-size: 2.5rem;">
                         {{ strtoupper(substr($user->first_name, 0, 1)) }}{{ strtoupper(substr($user->last_name, 0, 1)) }}
                     </div>
                 @endif
@@ -42,7 +86,7 @@
 
             <!-- Name and Info -->
             <div style="color: white; flex: 1;">
-                <h2 style="margin: 0 0 8px 0; font-size: 1.8rem; font-weight: 700;">{{ $user->name }}</h2>
+                <h2 class="profile-name" style="margin: 0 0 8px 0; font-size: clamp(1.4rem, 4vw, 1.8rem); font-weight: 700;">{{ $user->name }}</h2>
                 @if($user->location)
                 <p style="margin: 0 0 8px 0; font-size: 0.9rem; opacity: 0.95;">
                     <i class="fas fa-map-marker-alt" style="margin-right: 6px;"></i>
@@ -55,14 +99,14 @@
             </div>
 
             <!-- Action Buttons -->
-            <div style="display: flex; gap: 12px;">
+            <div class="profile-actions" style="display: flex; gap: 12px;">
                 <button type="button" style="background: white; color: #7C5CEE; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;" data-bs-toggle="modal" data-bs-target="#editProfileModal">
-                    <i class="fas fa-edit"></i> Edit Profile
+                    <i class="fas fa-edit"></i> <span class="d-none d-sm-inline">Edit Profile</span><span class="d-inline d-sm-none">Edit</span>
                 </button>
                 <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
                     @csrf
                     <button type="submit" onclick="return confirm('Are you sure you want to logout?')" style="background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;">
-                        <i class="fas fa-sign-out-alt"></i> Logout
+                        <i class="fas fa-sign-out-alt"></i> <span class="d-none d-sm-inline">Logout</span>
                     </button>
                 </form>
             </div>
@@ -70,7 +114,7 @@
     </div>
 
     <!-- Content Grid -->
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
+    <div class="profile-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
         <!-- Bio Card -->
         <div style="background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1px solid #f0f0f0;">
             <h5 style="font-weight: 700; color: #1a1a1a; margin-bottom: 12px; font-size: 0.95rem;">
