@@ -23,5 +23,10 @@ class AppServiceProvider extends ServiceProvider
         if (config('app.env') === 'production') {
             \URL::forceScheme('https');
         }
+
+        // Helper function for image URLs
+        \Blade::directive('imageUrl', function ($expression) {
+            return "<?php echo (str_starts_with($expression, 'http://') || str_starts_with($expression, 'https://')) ? $expression : asset('storage/' . $expression); ?>";
+        });
     }
 }

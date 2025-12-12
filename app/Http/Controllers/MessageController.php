@@ -8,6 +8,7 @@ use App\Models\PostRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class MessageController extends Controller
 {
@@ -153,7 +154,10 @@ class MessageController extends Controller
 
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('messages', 'public');
+            $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath(), [
+                'folder' => 'liveon/messages'
+            ])->getSecurePath();
+            $imagePath = $uploadedFileUrl;
         }
 
         Message::create([
@@ -272,7 +276,10 @@ class MessageController extends Controller
 
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('messages', 'public');
+            $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath(), [
+                'folder' => 'liveon/messages'
+            ])->getSecurePath();
+            $imagePath = $uploadedFileUrl;
         }
 
         Message::create([

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class ProfileController extends Controller
 {
@@ -30,13 +31,17 @@ class ProfileController extends Controller
         ]);
 
         if ($request->hasFile('profile_image')) {
-            $path = $request->file('profile_image')->store('profiles', 'public');
-            $validated['profile_image'] = $path;
+            $uploadedFileUrl = Cloudinary::upload($request->file('profile_image')->getRealPath(), [
+                'folder' => 'liveon/profiles'
+            ])->getSecurePath();
+            $validated['profile_image'] = $uploadedFileUrl;
         }
 
         if ($request->hasFile('cover_image')) {
-            $path = $request->file('cover_image')->store('covers', 'public');
-            $validated['cover_image'] = $path;
+            $uploadedFileUrl = Cloudinary::upload($request->file('cover_image')->getRealPath(), [
+                'folder' => 'liveon/covers'
+            ])->getSecurePath();
+            $validated['cover_image'] = $uploadedFileUrl;
         }
 
         // Update first_name and last_name from name

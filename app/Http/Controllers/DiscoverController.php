@@ -7,6 +7,7 @@ use App\Models\PostRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class DiscoverController extends Controller
 {
@@ -74,8 +75,10 @@ class DiscoverController extends Controller
         ]);
 
         if ($request->hasFile('cover_image')) {
-            $path = $request->file('cover_image')->store('covers', 'public');
-            $validated['cover_image'] = $path;
+            $uploadedFileUrl = Cloudinary::upload($request->file('cover_image')->getRealPath(), [
+                'folder' => 'liveon/posts'
+            ])->getSecurePath();
+            $validated['cover_image'] = $uploadedFileUrl;
         }
 
         $validated['user_id'] = Auth::id();
