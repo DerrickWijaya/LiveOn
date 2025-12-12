@@ -8,7 +8,7 @@ use App\Models\PostRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Cloudinary\Cloudinary as CloudinarySDK;
 
 class MessageController extends Controller
 {
@@ -154,10 +154,17 @@ class MessageController extends Controller
 
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath(), [
+            $cloudinary = new CloudinarySDK([
+                'cloud' => [
+                    'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+                    'api_key' => env('CLOUDINARY_API_KEY'),
+                    'api_secret' => env('CLOUDINARY_API_SECRET'),
+                ]
+            ]);
+            $result = $cloudinary->uploadApi()->upload($request->file('image')->getRealPath(), [
                 'folder' => 'liveon/messages'
-            ])->getSecurePath();
-            $imagePath = $uploadedFileUrl;
+            ]);
+            $imagePath = $result['secure_url'];
         }
 
         Message::create([
@@ -276,10 +283,17 @@ class MessageController extends Controller
 
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath(), [
+            $cloudinary = new CloudinarySDK([
+                'cloud' => [
+                    'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+                    'api_key' => env('CLOUDINARY_API_KEY'),
+                    'api_secret' => env('CLOUDINARY_API_SECRET'),
+                ]
+            ]);
+            $result = $cloudinary->uploadApi()->upload($request->file('image')->getRealPath(), [
                 'folder' => 'liveon/messages'
-            ])->getSecurePath();
-            $imagePath = $uploadedFileUrl;
+            ]);
+            $imagePath = $result['secure_url'];
         }
 
         Message::create([

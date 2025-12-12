@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Cloudinary\Cloudinary as CloudinarySDK;
 
 class ProfileController extends Controller
 {
@@ -30,18 +30,26 @@ class ProfileController extends Controller
             'cover_image' => 'nullable|image|max:2048',
         ]);
 
+        $cloudinary = new CloudinarySDK([
+            'cloud' => [
+                'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+                'api_key' => env('CLOUDINARY_API_KEY'),
+                'api_secret' => env('CLOUDINARY_API_SECRET'),
+            ]
+        ]);
+
         if ($request->hasFile('profile_image')) {
-            $uploadedFileUrl = Cloudinary::upload($request->file('profile_image')->getRealPath(), [
+            $result = $cloudinary->uploadApi()->upload($request->file('profile_image')->getRealPath(), [
                 'folder' => 'liveon/profiles'
-            ])->getSecurePath();
-            $validated['profile_image'] = $uploadedFileUrl;
+            ]);
+            $validated['profile_image'] = $result['secure_url'];
         }
 
         if ($request->hasFile('cover_image')) {
-            $uploadedFileUrl = Cloudinary::upload($request->file('cover_image')->getRealPath(), [
+            $result = $cloudinary->uploadApi()->upload($request->file('cover_image')->getRealPath(), [
                 'folder' => 'liveon/covers'
-            ])->getSecurePath();
-            $validated['cover_image'] = $uploadedFileUrl;
+            ]);
+            $validated['cover_image'] = $result['secure_url'];
         }
 
         // Update first_name and last_name from name
