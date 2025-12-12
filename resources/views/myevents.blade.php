@@ -3,8 +3,45 @@
 @section('title', 'My Events - LiveOn')
 
 @section('content')
+<style>
+    .myevents-grid {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        gap: 28px;
+    }
 
-<div style="display: grid; grid-template-columns: 250px 1fr; gap: 28px; padding: 32px 30px; max-width: 1400px; margin: 0 auto; background: #fafbfc; min-height: 100vh; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;">
+    @media (max-width: 992px) {
+        .myevents-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .myevents-sidebar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .event-card {
+            flex-direction: column !important;
+        }
+        
+        .event-cover {
+            width: 100% !important;
+            height: 150px !important;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .myevents-container {
+            padding: 15px !important;
+        }
+    }
+</style>
+
+<div class="myevents-container" style="padding: 32px 30px; max-width: 1400px; margin: 0 auto; background: #fafbfc; min-height: 100vh; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;">
+<div class="myevents-grid" style="display: grid; grid-template-columns: 250px 1fr; gap: 28px;">
     
     @if (session('success'))
         <div style="grid-column: 1 / -1; background: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
@@ -21,7 +58,7 @@
     @endif
 
     <!-- Left Sidebar - Summary -->
-    <div>
+    <div class="myevents-sidebar">
         <h3 style="font-weight: 700; color: #1a1a1a; margin-bottom: 20px; font-size: 0.95rem;">Summary</h3>
         
         <!-- Total Posts Card -->
@@ -53,9 +90,9 @@
         <p style="color: #999; margin-bottom: 20px; font-size: 0.9rem;">Manage your posts and view join requests.</p>
 
         @forelse ($posts as $post)
-            <div style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: flex; gap: 16px; border: 1px solid #f0f0f0;">
+            <div class="event-card" style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: flex; gap: 16px; border: 1px solid #f0f0f0;">
                 <!-- Cover Image -->
-                <div style="flex-shrink: 0;">
+                <div class="event-cover" style="flex-shrink: 0; width: 100px;">
                     @if ($post->cover_image)
                         <img src="{{ str_starts_with($post->cover_image, 'http') ? $post->cover_image : asset('storage/' . $post->cover_image) }}" alt="{{ $post->concert_name }}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
                     @elseif ($post->cover_color)
