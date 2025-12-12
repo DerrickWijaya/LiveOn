@@ -24,7 +24,7 @@
                         <a href="{{ route('messages.direct', $otherUser) }}" style="text-decoration: none;">
                             <div style="padding: 12px; border-radius: 10px; margin-bottom: 6px; background: white; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: all 0.2s ease; border: 1px solid #f0f0f0;" onmouseover="this.style.backgroundColor='#f5f5f5'; this.style.borderColor='#ddd';" onmouseout="this.style.backgroundColor='white'; this.style.borderColor='#f0f0f0';">
                                 @if ($otherUser->profile_image)
-                                    <img src="{{ asset('storage/' . $otherUser->profile_image) }}" alt="Profile" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
+                                    <img src="{{ str_starts_with($otherUser->profile_image, 'http') ? $otherUser->profile_image : asset('storage/' . $otherUser->profile_image) }}" alt="Profile" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
                                 @else
                                     <div style="width: 36px; height: 36px; background: #00BCD4; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.85rem; flex-shrink: 0;">
                                         {{ strtoupper(substr($otherUser->first_name, 0, 1)) }}

@@ -22,14 +22,14 @@
     <!-- Profile Header with Cover -->
     <div style="background: linear-gradient(135deg, #7C5CEE, #FF6B9D); border-radius: 12px; padding: 32px; margin-bottom: 24px; position: relative; min-height: 200px; display: flex; align-items: flex-end;">
         @if ($user->cover_image)
-            <img src="{{ asset('storage/' . $user->cover_image) }}" alt="Cover" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+            <img src="{{ str_starts_with($user->cover_image, 'http') ? $user->cover_image : asset('storage/' . $user->cover_image) }}" alt="Cover" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
         @endif
         
         <div style="position: relative; z-index: 1; display: flex; align-items: flex-end; gap: 20px; width: 100%;">
             <!-- Profile Picture -->
             <div style="position: relative;">
                 @if ($user->profile_image)
-                    <img src="{{ asset('storage/' . $user->profile_image) }}" alt="Profile" style="width: 120px; height: 120px; border-radius: 50%; border: 4px solid white; object-fit: cover;">
+                    <img src="{{ str_starts_with($user->profile_image, 'http') ? $user->profile_image : asset('storage/' . $user->profile_image) }}" alt="Profile" style="width: 120px; height: 120px; border-radius: 50%; border: 4px solid white; object-fit: cover;">
                 @else
                     <div style="width: 120px; height: 120px; background: white; border-radius: 50%; border: 4px solid white; display: flex; align-items: center; justify-content: center; color: #7C5CEE; font-weight: 700; font-size: 2.5rem;">
                         {{ strtoupper(substr($user->first_name, 0, 1)) }}{{ strtoupper(substr($user->last_name, 0, 1)) }}

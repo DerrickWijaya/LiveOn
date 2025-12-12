@@ -43,7 +43,7 @@
             </button>
             @if (Auth::user()->profile_image)
                 <a href="{{ route('profile') }}" style="text-decoration: none;">
-                    <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" alt="User" style="width: 36px; height: 36px; border-radius: 50%; cursor: pointer; object-fit: cover;">
+                    <img src="{{ str_starts_with(Auth::user()->profile_image, 'http') ? Auth::user()->profile_image : asset('storage/' . Auth::user()->profile_image) }}" alt="User" style="width: 36px; height: 36px; border-radius: 50%; cursor: pointer; object-fit: cover;">
                 </a>
             @else
                 <a href="{{ route('profile') }}" style="text-decoration: none;">
@@ -124,7 +124,8 @@
                         @php
                             $headerBackground = 'linear-gradient(135deg, #7C5CEE, #FF6B9D)';
                             if ($post->cover_image) {
-                                $headerBackground = 'linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(' . asset('storage/' . $post->cover_image) . ')';
+                                $imageUrl = str_starts_with($post->cover_image, 'http') ? $post->cover_image : asset('storage/' . $post->cover_image);
+                                $headerBackground = 'linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(' . $imageUrl . ')';
                             } elseif ($post->cover_color) {
                                 $headerBackground = $post->cover_color;
                             }

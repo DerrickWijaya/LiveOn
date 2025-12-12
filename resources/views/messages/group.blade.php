@@ -21,7 +21,7 @@
                 <a href="{{ route('messages.direct', $post->user->id) }}" style="text-decoration: none; display: flex;">
                     <div style="padding: 10px; border-radius: 8px; margin-bottom: 6px; background: white; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: all 0.2s ease; border: 1px solid #f0f0f0; width: 100%;" onmouseover="this.style.backgroundColor='#f5f5f5'; this.style.borderColor='#ddd';" onmouseout="this.style.backgroundColor='white'; this.style.borderColor='#f0f0f0';">
                         @if ($post->user->profile_image)
-                            <img src="{{ asset('storage/' . $post->user->profile_image) }}" alt="Profile" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;">
+                            <img src="{{ str_starts_with($post->user->profile_image, 'http') ? $post->user->profile_image : asset('storage/' . $post->user->profile_image) }}" alt="Profile" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;">
                         @else
                             <div style="width: 36px; height: 36px; background: #7C5CEE; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; flex-shrink: 0; font-size: 0.85rem;">
                                 {{ strtoupper(substr($post->user->first_name, 0, 1)) }}
@@ -119,7 +119,7 @@
                     <div style="display: flex; gap: 10px; max-width: 70%; {{ $isOwn ? 'flex-direction: row-reverse;' : '' }}">
                         <!-- Avatar -->
                         @if ($message->sender->profile_image)
-                            <img src="{{ asset('storage/' . $message->sender->profile_image) }}" alt="Profile" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
+                            <img src="{{ str_starts_with($message->sender->profile_image, 'http') ? $message->sender->profile_image : asset('storage/' . $message->sender->profile_image) }}" alt="Profile" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover; flex-shrink: 0;">
                         @else
                             <div style="width: 28px; height: 28px; {{ $isOwn ? 'background: #7C5CEE;' : 'background: #00BCD4;' }} color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.8rem; flex-shrink: 0;">
                                 {{ strtoupper(substr($message->sender->first_name, 0, 1)) }}
@@ -138,7 +138,7 @@
                             <!-- Message Content -->
                             <div>
                                 @if ($message->image_path)
-                                    <img src="{{ asset('storage/' . $message->image_path) }}" alt="Image" style="max-width: 300px; max-height: 300px; border-radius: 10px; margin-bottom: 6px; display: block; object-fit: cover;">
+                                    <img src="{{ str_starts_with($message->image_path, 'http') ? $message->image_path : asset('storage/' . $message->image_path) }}" alt="Image" style="max-width: 300px; max-height: 300px; border-radius: 10px; margin-bottom: 6px; display: block; object-fit: cover;">
                                 @endif
                                 
                                 @if ($message->message)

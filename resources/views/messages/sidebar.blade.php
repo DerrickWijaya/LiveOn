@@ -37,7 +37,7 @@
 
                             {{-- PROFILE IMAGE --}}
                             @if ($otherUser->profile_image)
-                                <img src="{{ asset('storage/' . $otherUser->profile_image) }}"
+                                <img src="{{ str_starts_with($otherUser->profile_image, 'http') ? $otherUser->profile_image : asset('storage/' . $otherUser->profile_image) }}"
                                      style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;">
                             @else
                                 <div style="

@@ -24,7 +24,7 @@
             </button>
             @if (Auth::user()->profile_image)
                 <a href="{{ route('profile') }}" style="text-decoration: none;">
-                    <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%; cursor: pointer; object-fit: cover;">
+                    <img src="{{ str_starts_with(Auth::user()->profile_image, 'http') ? Auth::user()->profile_image : asset('storage/' . Auth::user()->profile_image) }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%; cursor: pointer; object-fit: cover;">
                 </a>
             @else
                 <a href="{{ route('profile') }}" style="text-decoration: none;">

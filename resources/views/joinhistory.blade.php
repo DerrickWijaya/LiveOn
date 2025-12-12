@@ -25,7 +25,7 @@
             <!-- Cover Image -->
             <div style="flex-shrink: 0;">
                 @if ($post->cover_image)
-                    <img src="{{ asset('storage/' . $post->cover_image) }}" alt="{{ $post->concert_name }}" style="width: 88px; height: 88px; object-fit: cover; border-radius: 8px;">
+                    <img src="{{ str_starts_with($post->cover_image, 'http') ? $post->cover_image : asset('storage/' . $post->cover_image) }}" alt="{{ $post->concert_name }}" style="width: 88px; height: 88px; object-fit: cover; border-radius: 8px;">
                 @elseif ($post->cover_color)
                     <div style="width: 88px; height: 88px; background: {{ $post->cover_color }}; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
                         <i class="fas fa-music" style="color: white; font-size: 1.5rem;"></i>

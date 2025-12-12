@@ -57,7 +57,7 @@
                 <!-- Cover Image -->
                 <div style="flex-shrink: 0;">
                     @if ($post->cover_image)
-                        <img src="{{ asset('storage/' . $post->cover_image) }}" alt="{{ $post->concert_name }}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
+                        <img src="{{ str_starts_with($post->cover_image, 'http') ? $post->cover_image : asset('storage/' . $post->cover_image) }}" alt="{{ $post->concert_name }}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
                     @elseif ($post->cover_color)
                         <div style="width: 100px; height: 100px; background: {{ $post->cover_color }}; border-radius: 8px;"></div>
                     @else
@@ -127,7 +127,7 @@
                                         <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #fafbfc; border-radius: 8px; margin-bottom: 10px; border: 1px solid #f0f0f0; {{ $isFull ? 'opacity: 0.6;' : '' }}">
                                             <div style="display: flex; align-items: center; gap: 12px; flex: 1; cursor: pointer;" onclick="window.location.href='{{ route('messages.direct', $request->user->id) }}';" onmouseover="this.style.opacity='0.7';" onmouseout="this.style.opacity='1';">
                                                 @if ($request->user->profile_image)
-                                                    <img src="{{ asset('storage/' . $request->user->profile_image) }}" alt="User" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;">
+                                                    <img src="{{ str_starts_with($request->user->profile_image, 'http') ? $request->user->profile_image : asset('storage/' . $request->user->profile_image) }}" alt="User" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover;">
                                                 @else
                                                     <div style="width: 36px; height: 36px; background: #00BCD4; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.8rem;">
                                                         {{ strtoupper(substr($request->user->first_name, 0, 1)) }}
@@ -163,7 +163,7 @@
                                         <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #f9f9f9; border-radius: 8px; margin-bottom: 12px;">
                                             <div style="display: flex; align-items: center; gap: 12px; flex: 1; cursor: pointer;" onclick="window.location.href='{{ route('messages.direct', $request->user->id) }}';" onmouseover="this.style.opacity='0.7';" onmouseout="this.style.opacity='1';">
                                                 @if ($request->user->profile_image)
-                                                    <img src="{{ asset('storage/' . $request->user->profile_image) }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                                                    <img src="{{ str_starts_with($request->user->profile_image, 'http') ? $request->user->profile_image : asset('storage/' . $request->user->profile_image) }}" alt="User" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
                                                 @else
                                                     <div style="width: 40px; height: 40px; background: #00BCD4; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600;">
                                                         {{ strtoupper(substr($request->user->first_name, 0, 1)) }}

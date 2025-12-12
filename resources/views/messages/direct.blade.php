@@ -16,7 +16,7 @@
         <div style="padding: 16px; border-bottom: 1px solid #eee; background: white;">
             <div style="display: flex; align-items: center; gap: 12px;">
                 @if ($otherUser->profile_image)
-                    <img src="{{ asset('storage/' . $otherUser->profile_image) }}"
+                    <img src="{{ str_starts_with($otherUser->profile_image, 'http') ? $otherUser->profile_image : asset('storage/' . $otherUser->profile_image) }}"
                          style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
                 @else
                     <div style="width: 40px; height: 40px; background: #00BCD4; color: white;
@@ -66,7 +66,7 @@
                         {{-- SHOW IMAGE MESSAGE --}}
                         @if ($msg->image_path)
                             <div style="margin-top: 6px;">
-                                <img src="{{ asset('storage/' . $msg->image_path) }}"
+                                <img src="{{ str_starts_with($msg->image_path, 'http') ? $msg->image_path : asset('storage/' . $msg->image_path) }}"
                                      style="max-width: 100%; border-radius: 10px;">
                             </div>
                         @endif
